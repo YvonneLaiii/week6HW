@@ -1,27 +1,25 @@
-body { font: 12px Arial; }
+.dots {
+  cursor: pointer;
+}
+
+body {
+  font-family: TimesNewRoman, "Times New Roman", Times, Baskerville, Georgia, serif;
+}
 
 path {
   stroke-width: 2;
   fill: none;
 }
 
-.axis path,
-.axis line {
-  fill: none;
-  stroke: grey;
-  stroke-width: 1;
-  shape-rendering: crispEdges;
-}
 
 div.tooltip {
   position: absolute;
   text-align: center;
-  width: 400px;
+  width: 500px;
   height: 300px;
   padding: 2px;
-  font: 12px sans-serif;
-  background: lightsteelblue;
-  border: 0;
-  border-radius: 8px;
+  font: 8px;
+  background: pink;
+  border-radius: 10px;
   pointer-events: none;
 }
