@@ -30,56 +30,6 @@
     makeLabel();
   }
 
-  function plotTooltip(country) {
-    tooltipSvg.selectAll("*").remove();
-    let countryData = csvData.filter(function(d){return d.country==country})
-    let yearLimits = d3.extent(countryData, d => d['year'])
-    let xScale = d3.scaleLinear()
-        .domain([yearLimits[0], yearLimits[1]])
-        .range([25,375])
-
-    let xAxis2 = tooltipSvg.append("g")
-        .attr("transform", "translate(0," + 275 + ")")
-        .call(d3.axisBottom(xScale))
-    let pop = countryData.map((row) => parseInt(row["population"]));
-    let populationLimits = [d3.min(pop),d3.max(pop)]
-    let yScale = d3.scaleLinear()
-        .domain([populationLimits[1], populationLimits[0]])
-        .range([25,275])
-
-    let yAxis2 = tooltipSvg.append("g")
-        .attr("transform", "translate(" + 25 + ",0)")
-        .call(d3.axisRight(yScale)
-            .tickFormat(function(d) {
-              var s = d/1000000;
-              return s + "M";
-            }))
-    let line = d3.line()
-        .x(d => xScale(d['year']))
-        .y(d => yScale(d['population']))
-
-    tooltipSvg.append("path")
-        .datum(countryData)
-        .attr("d", function(d) { return line(d) })
-        .attr("fill", "steelblue")
-        .attr("stroke", "steelblue")
-
-    tooltipSvg.append('text')
-      .attr('x', 100)
-      .attr('y', 20)
-      .style('font-size', '10pt')
-      .text('Time vs Country for ' + country);
-    tooltipSvg.append('text')
-      .attr('x', 200)
-      .attr('y', 298)
-      .style('font-size', '8pt')
-      .text('year');
-    tooltipSvg.append('text')
-      .attr('transform', 'translate(15, 200)rotate(-90)')
-      .style('font-size', '8pt')
-      .text('Population');
-  }
-
   function makeLabel() {
     svgContainer.append('text')
       .attr('x', 10)
@@ -149,6 +99,56 @@
             .attr('x', function(d) { return xMap(+d['fertility']) + 20})
             .attr('y', function(d) { return yMap(+d['life_expectancy'])})
             .text(function(d) { return d['country'] })
+  }
+
+  function plotTooltip(country) {
+    tooltipSvg.selectAll("*").remove();
+    let countryData = csvData.filter(function(d){return d.country==country})
+    let yearLimits = d3.extent(countryData, d => d['year'])
+    let xScale = d3.scaleLinear()
+        .domain([yearLimits[0], yearLimits[1]])
+        .range([25,375])
+
+    let xAxis2 = tooltipSvg.append("g")
+        .attr("transform", "translate(0," + 275 + ")")
+        .call(d3.axisBottom(xScale))
+    let pop = countryData.map((row) => parseInt(row["population"]));
+    let populationLimits = [d3.min(pop),d3.max(pop)]
+    let yScale = d3.scaleLinear()
+        .domain([populationLimits[1], populationLimits[0]])
+        .range([25,275])
+
+    let yAxis2 = tooltipSvg.append("g")
+        .attr("transform", "translate(" + 25 + ",0)")
+        .call(d3.axisRight(yScale)
+            .tickFormat(function(d) {
+              var s = d/1000000;
+              return s + "M";
+            }))
+    let line = d3.line()
+        .x(d => xScale(d['year']))
+        .y(d => yScale(d['population']))
+
+    tooltipSvg.append("path")
+        .datum(countryData)
+        .attr("d", function(d) { return line(d) })
+        .attr("fill", "steelblue")
+        .attr("stroke", "steelblue")
+
+    tooltipSvg.append('text')
+      .attr('x', 100)
+      .attr('y', 20)
+      .style('font-size', '10pt')
+      .text('Time vs Country for ' + country);
+    tooltipSvg.append('text')
+      .attr('x', 200)
+      .attr('y', 298)
+      .style('font-size', '8pt')
+      .text('year');
+    tooltipSvg.append('text')
+      .attr('transform', 'translate(15, 200)rotate(-90)')
+      .style('font-size', '8pt')
+      .text('Population');
   }
 
   function drawAxes(limits, x, y) {
